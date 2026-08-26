@@ -1,0 +1,865 @@
+from pathlib import Path
+
+html = r"""<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Enterprise AI Document & Risk Management Platform — Project Specification</title>
+<style>
+  :root { --bg:#f5f7fb; --card:#fff; --text:#172033; --muted:#5f6b7a; --line:#dfe5ee; --accent:#2563eb; --good:#15803d; --warn:#b45309; --dark:#111827; }
+  * { box-sizing:border-box; }
+  body { margin:0; font-family:Inter,system-ui,-apple-system,BlinkMacSystemFont,"Segoe UI",sans-serif; background:var(--bg); color:var(--text); line-height:1.6; }
+  header { background:linear-gradient(135deg,#111827,#1e3a8a); color:white; padding:48px 20px; }
+  header .wrap, main { max-width:1150px; margin:auto; }
+  h1 { margin:0 0 10px; font-size:clamp(2rem,5vw,3.3rem); line-height:1.1; }
+  h2 { margin-top:0; font-size:1.65rem; }
+  h3 { font-size:1.15rem; margin-top:25px; }
+  p { color:var(--muted); }
+  header p { color:#dbeafe; max-width:850px; font-size:1.05rem; }
+  nav { background:white; border-bottom:1px solid var(--line); position:sticky; top:0; z-index:10; }
+  nav .wrap { max-width:1150px; margin:auto; padding:12px 20px; display:flex; gap:10px; flex-wrap:wrap; }
+  nav a { color:#334155; text-decoration:none; font-size:.9rem; padding:5px 8px; border-radius:6px; }
+  nav a:hover { background:#eff6ff; color:var(--accent); }
+  main { padding:30px 20px 70px; }
+  section { background:var(--card); border:1px solid var(--line); border-radius:14px; padding:28px; margin:20px 0; box-shadow:0 2px 8px rgba(15,23,42,.03); }
+  .hero-grid,.grid { display:grid; grid-template-columns:repeat(auto-fit,minmax(240px,1fr)); gap:15px; }
+  .stat { border:1px solid var(--line); border-radius:10px; padding:16px; background:#fafcff; }
+  .stat strong { display:block; font-size:1.25rem; color:var(--dark); }
+  .tag { display:inline-block; background:#eff6ff; color:#1d4ed8; padding:4px 9px; border-radius:999px; margin:3px; font-size:.85rem; }
+  .must { border-left:4px solid var(--accent); }
+  .nice { border-left:4px solid #f59e0b; }
+  .advanced { border-left:4px solid #7c3aed; }
+  ul.checklist { list-style:none; padding:0; margin:10px 0 0; }
+  li.task { margin:8px 0; padding:9px 10px; border:1px solid var(--line); border-radius:8px; background:#fff; }
+  li.task:hover { background:#f8fafc; }
+  input[type=checkbox] { width:17px; height:17px; margin-right:10px; vertical-align:-3px; accent-color:var(--accent); }
+  code, pre { font-family:"SFMono-Regular",Consolas,monospace; }
+  code { background:#eef2f7; padding:2px 5px; border-radius:4px; }
+  pre { background:#0f172a; color:#e2e8f0; padding:18px; border-radius:10px; overflow:auto; }
+  table { width:100%; border-collapse:collapse; margin:12px 0; }
+  th,td { border:1px solid var(--line); padding:10px; text-align:left; vertical-align:top; }
+  th { background:#f8fafc; }
+  .flow { font-weight:600; background:#f8fafc; border:1px dashed #cbd5e1; padding:15px; border-radius:10px; overflow:auto; white-space:nowrap; }
+  .small { font-size:.9rem; color:var(--muted); }
+  .progress { position:fixed; right:18px; bottom:18px; background:#111827; color:white; padding:10px 14px; border-radius:999px; box-shadow:0 5px 20px rgba(0,0,0,.2); font-size:.9rem; }
+  .button { border:0; background:#2563eb; color:white; padding:9px 13px; border-radius:7px; cursor:pointer; }
+  .button.secondary { background:#475569; }
+  .danger { color:#b91c1c; }
+  footer { text-align:center; color:var(--muted); padding:20px; }
+  @media(max-width:700px){ section{padding:20px;} nav{position:static;} }
+</style>
+</head>
+<body>
+
+<header>
+<div class="wrap">
+  <h1>Enterprise AI Document & Risk Management Platform</h1>
+  <p>Master project specification and implementation checklist for a production-style full-stack application. The project is designed to demonstrate modern web engineering skills: Python/FastAPI, React/TypeScript, PostgreSQL, REST APIs, OOP, clean code, testing, Docker, CI/CD, cloud, microservices and AI/RAG.</p>
+  <div>
+    <span class="tag">Python</span><span class="tag">FastAPI</span><span class="tag">React</span>
+    <span class="tag">TypeScript</span><span class="tag">PostgreSQL</span><span class="tag">Material UI</span>
+    <span class="tag">Docker</span><span class="tag">Redis</span><span class="tag">RAG / AI</span>
+    <span class="tag">GCP</span><span class="tag">CI/CD</span>
+  </div>
+</div>
+</header>
+
+<nav>
+<div class="wrap">
+  <a href="#overview">Overview</a><a href="#requirements">Requirements</a><a href="#architecture">Architecture</a>
+  <a href="#backend">Backend</a><a href="#frontend">Frontend</a><a href="#database">Database</a>
+  <a href="#ai">AI/RAG</a><a href="#quality">Quality</a><a href="#devops">DevOps</a>
+  <a href="#security">Security</a><a href="#roadmap">4-Month Plan</a><a href="#final">Final Checklist</a>
+</div>
+</nav>
+
+<main>
+
+<section id="overview">
+<h2>1. Project Overview</h2>
+<p><strong>Business idea:</strong> A secure enterprise platform for consulting teams or companies to manage projects, business documents, risks and AI-powered document analysis from one web application.</p>
+
+<div class="hero-grid">
+  <div class="stat"><strong>Problem</strong>Business documents are difficult to organize, search and analyze manually.</div>
+  <div class="stat"><strong>Users</strong>Admins, managers, members and viewers.</div>
+  <div class="stat"><strong>Main value</strong>Central document management + permissions + AI answers + risk tracking.</div>
+  <div class="stat"><strong>Target</strong>Production-style portfolio project for software/technology internship interviews.</div>
+</div>
+
+<h3>What a real user should be able to do</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Create an account and log in.</li>
+<li class="task"><input type="checkbox">See a dashboard with useful business metrics.</li>
+<li class="task"><input type="checkbox">Create and manage projects.</li>
+<li class="task"><input type="checkbox">Invite or manage project members.</li>
+<li class="task"><input type="checkbox">Upload PDF, DOCX and TXT documents.</li>
+<li class="task"><input type="checkbox">Search, filter and paginate documents.</li>
+<li class="task"><input type="checkbox">View document metadata and activity.</li>
+<li class="task"><input type="checkbox">Ask questions about uploaded documents.</li>
+<li class="task"><input type="checkbox">See AI answers with document/page/section references when available.</li>
+<li class="task"><input type="checkbox">Create and manage business risks.</li>
+<li class="task"><input type="checkbox">View analytics and charts.</li>
+<li class="task"><input type="checkbox">See audit history of important actions.</li>
+</ul>
+</section>
+
+<section id="requirements">
+<h2>2. Requirements and Scope</h2>
+
+<div class="must">
+<h3>Must-have — build these first</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Python fundamentals and OOP used in the code.</li>
+<li class="task"><input type="checkbox">FastAPI REST backend.</li>
+<li class="task"><input type="checkbox">React + TypeScript frontend.</li>
+<li class="task"><input type="checkbox">PostgreSQL relational database.</li>
+<li class="task"><input type="checkbox">REST API design.</li>
+<li class="task"><input type="checkbox">Material UI.</li>
+<li class="task"><input type="checkbox">JWT authentication.</li>
+<li class="task"><input type="checkbox">Role-based authorization.</li>
+<li class="task"><input type="checkbox">Projects and documents CRUD.</li>
+<li class="task"><input type="checkbox">Frontend ↔ REST API integration.</li>
+<li class="task"><input type="checkbox">Unit/API tests.</li>
+<li class="task"><input type="checkbox">Git workflow.</li>
+</ul>
+</div>
+
+<div class="nice">
+<h3>Nice-to-have — add after the MVP</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Linux and Bash scripts.</li>
+<li class="task"><input type="checkbox">Docker and Docker Compose.</li>
+<li class="task"><input type="checkbox">Redis caching/rate limiting.</li>
+<li class="task"><input type="checkbox">GitHub Actions CI/CD.</li>
+<li class="task"><input type="checkbox">GCP deployment.</li>
+<li class="task"><input type="checkbox">Audit logs.</li>
+<li class="task"><input type="checkbox">Data visualization.</li>
+<li class="task"><input type="checkbox">NoSQL/event storage experiment.</li>
+</ul>
+</div>
+
+<div class="advanced">
+<h3>Advanced — only after the core project works</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">RAG pipeline with embeddings and vector search.</li>
+<li class="task"><input type="checkbox">Separate AI microservice.</li>
+<li class="task"><input type="checkbox">Background document processing jobs.</li>
+<li class="task"><input type="checkbox">Monitoring and alerting.</li>
+<li class="task"><input type="checkbox">Infrastructure-as-code with Terraform.</li>
+<li class="task"><input type="checkbox">Kubernetes exposure/demo.</li>
+</ul>
+</div>
+</section>
+
+<section id="architecture">
+<h2>3. System Architecture</h2>
+<p>Start simple. Add complexity only when you have a reason.</p>
+<div class="flow">Browser → React + TypeScript → REST API → FastAPI → Services → Repositories → PostgreSQL</div>
+<div class="flow" style="margin-top:10px">React → FastAPI → Redis (cache/rate limit) → PostgreSQL / Object Storage</div>
+<div class="flow" style="margin-top:10px">FastAPI → AI Service → Document Processing → Embeddings → Vector Store → LLM</div>
+
+<h3>Target architecture</h3>
+<pre>
+                    ┌─────────────────────────┐
+                    │   React + TypeScript     │
+                    │      Material UI         │
+                    └────────────┬────────────┘
+                                 │ HTTPS / REST
+                                 ▼
+                    ┌─────────────────────────┐
+                    │      FastAPI API        │
+                    │ Auth / Projects / Docs  │
+                    │ Risks / Analytics       │
+                    └──────┬─────────┬─────────┘
+                           │         │
+                    ┌──────▼───┐ ┌──▼─────────┐
+                    │PostgreSQL│ │   Redis    │
+                    └──────────┘ └────────────┘
+                           │
+                           ▼
+                    ┌─────────────────┐
+                    │  AI Service     │
+                    │ RAG / Embedding  │
+                    └────────┬────────┘
+                             ▼
+                    ┌─────────────────┐
+                    │ Vector Store    │
+                    │ + LLM Provider  │
+                    └─────────────────┘
+
+              Docker → CI/CD → Cloud (GCP)
+</pre>
+
+<h3>Architecture tasks</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Write a one-page architecture decision document.</li>
+<li class="task"><input type="checkbox">Explain why FastAPI was selected.</li>
+<li class="task"><input type="checkbox">Explain why PostgreSQL was selected.</li>
+<li class="task"><input type="checkbox">Define frontend/backend boundaries.</li>
+<li class="task"><input type="checkbox">Define service/repository responsibilities.</li>
+<li class="task"><input type="checkbox">Draw a system architecture diagram.</li>
+<li class="task"><input type="checkbox">Document how the system could scale later.</li>
+</ul>
+</section>
+
+<section id="backend">
+<h2>4. Backend — Python + FastAPI</h2>
+
+<h3>Suggested structure</h3>
+<pre>
+backend/
+├── app/
+│   ├── main.py
+│   ├── core/
+│   │   ├── config.py
+│   │   ├── security.py
+│   │   └── logging.py
+│   ├── api/
+│   │   └── v1/
+│   │       ├── auth.py
+│   │       ├── users.py
+│   │       ├── projects.py
+│   │       ├── documents.py
+│   │       ├── risks.py
+│   │       ├── search.py
+│   │       └── ai.py
+│   ├── models/
+│   ├── schemas/
+│   ├── services/
+│   ├── repositories/
+│   └── utils/
+├── tests/
+├── migrations/
+├── Dockerfile
+└── requirements.txt
+</pre>
+
+<h3>Backend tasks</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Create FastAPI application.</li>
+<li class="task"><input type="checkbox">Create API version prefix such as <code>/api/v1</code>.</li>
+<li class="task"><input type="checkbox">Configure environment variables.</li>
+<li class="task"><input type="checkbox">Create Pydantic request/response schemas.</li>
+<li class="task"><input type="checkbox">Create SQLAlchemy models.</li>
+<li class="task"><input type="checkbox">Create database session/dependency.</li>
+<li class="task"><input type="checkbox">Create service layer.</li>
+<li class="task"><input type="checkbox">Create repository layer.</li>
+<li class="task"><input type="checkbox">Add validation and useful HTTP status codes.</li>
+<li class="task"><input type="checkbox">Add global error handling.</li>
+<li class="task"><input type="checkbox">Add structured application logging.</li>
+<li class="task"><input type="checkbox">Generate and review OpenAPI documentation.</li>
+</ul>
+
+<h3>REST endpoints to build</h3>
+<table>
+<tr><th>Area</th><th>Endpoints</th><th>Purpose</th></tr>
+<tr><td>Auth</td><td>POST /auth/register<br>POST /auth/login<br>POST /auth/refresh</td><td>Create account and manage tokens.</td></tr>
+<tr><td>Users</td><td>GET /users/me<br>GET /users<br>PATCH /users/{id}</td><td>Profile and user administration.</td></tr>
+<tr><td>Projects</td><td>POST /projects<br>GET /projects<br>GET /projects/{id}<br>PATCH /projects/{id}<br>DELETE /projects/{id}</td><td>Project CRUD.</td></tr>
+<tr><td>Documents</td><td>POST /documents<br>GET /documents<br>GET /documents/{id}<br>DELETE /documents/{id}</td><td>Document management.</td></tr>
+<tr><td>Risks</td><td>POST /risks<br>GET /risks<br>PATCH /risks/{id}<br>DELETE /risks/{id}</td><td>Risk tracking.</td></tr>
+<tr><td>AI</td><td>POST /ai/questions<br>GET /ai/conversations/{id}</td><td>Document Q&A.</td></tr>
+<tr><td>Analytics</td><td>GET /analytics/dashboard</td><td>Dashboard metrics.</td></tr>
+</table>
+</section>
+
+<section id="frontend">
+<h2>5. Frontend — React + TypeScript + Material UI</h2>
+
+<h3>Pages</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Login page.</li>
+<li class="task"><input type="checkbox">Registration page.</li>
+<li class="task"><input type="checkbox">Dashboard page.</li>
+<li class="task"><input type="checkbox">Projects list.</li>
+<li class="task"><input type="checkbox">Project details.</li>
+<li class="task"><input type="checkbox">Documents list.</li>
+<li class="task"><input type="checkbox">Document details.</li>
+<li class="task"><input type="checkbox">Document upload page/dialog.</li>
+<li class="task"><input type="checkbox">AI assistant page.</li>
+<li class="task"><input type="checkbox">Risks page.</li>
+<li class="task"><input type="checkbox">Users/admin page.</li>
+<li class="task"><input type="checkbox">Profile/settings page.</li>
+</ul>
+
+<h3>Frontend engineering tasks</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Set up React + TypeScript.</li>
+<li class="task"><input type="checkbox">Set up routing.</li>
+<li class="task"><input type="checkbox">Create reusable Material UI components.</li>
+<li class="task"><input type="checkbox">Create API client.</li>
+<li class="task"><input type="checkbox">Implement login and token handling.</li>
+<li class="task"><input type="checkbox">Protect authenticated routes.</li>
+<li class="task"><input type="checkbox">Add loading states.</li>
+<li class="task"><input type="checkbox">Add empty states.</li>
+<li class="task"><input type="checkbox">Add useful error messages.</li>
+<li class="task"><input type="checkbox">Add forms with validation.</li>
+<li class="task"><input type="checkbox">Add pagination/filtering/sorting.</li>
+<li class="task"><input type="checkbox">Make the UI responsive.</li>
+</ul>
+</section>
+
+<section id="database">
+<h2>6. PostgreSQL Database</h2>
+
+<h3>Core entities</h3>
+<table>
+<tr><th>Table</th><th>Important fields</th><th>Relationship</th></tr>
+<tr><td>users</td><td>id, name, email, password_hash, role, created_at</td><td>Creates projects and documents.</td></tr>
+<tr><td>organizations</td><td>id, name, created_at</td><td>Contains teams/projects/users.</td></tr>
+<tr><td>projects</td><td>id, organization_id, name, description, owner_id</td><td>Contains documents and members.</td></tr>
+<tr><td>project_members</td><td>project_id, user_id, role</td><td>Many-to-many project membership.</td></tr>
+<tr><td>documents</td><td>id, project_id, owner_id, name, type, size, storage_path</td><td>Belongs to project.</td></tr>
+<tr><td>document_chunks</td><td>id, document_id, chunk_index, content, metadata</td><td>Used by RAG.</td></tr>
+<tr><td>risks</td><td>id, project_id, title, description, severity, status, owner_id</td><td>Project risks.</td></tr>
+<tr><td>ai_conversations</td><td>id, user_id, project_id, created_at</td><td>AI chat history.</td></tr>
+<tr><td>ai_messages</td><td>id, conversation_id, role, content, created_at</td><td>Conversation messages.</td></tr>
+<tr><td>audit_logs</td><td>id, user_id, action, entity_type, entity_id, created_at</td><td>Security/activity history.</td></tr>
+</table>
+
+<h3>Database tasks</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Design ER diagram.</li>
+<li class="task"><input type="checkbox">Create primary and foreign keys.</li>
+<li class="task"><input type="checkbox">Add constraints.</li>
+<li class="task"><input type="checkbox">Add useful indexes.</li>
+<li class="task"><input type="checkbox">Use migrations.</li>
+<li class="task"><input type="checkbox">Practice JOIN, GROUP BY, filtering and aggregation queries.</li>
+<li class="task"><input type="checkbox">Understand transactions.</li>
+<li class="task"><input type="checkbox">Review normalization.</li>
+</ul>
+</section>
+
+<section id="auth">
+<h2>7. Authentication & Authorization</h2>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Register user.</li>
+<li class="task"><input type="checkbox">Hash passwords securely.</li>
+<li class="task"><input type="checkbox">Login with email/password.</li>
+<li class="task"><input type="checkbox">Issue JWT access token.</li>
+<li class="task"><input type="checkbox">Handle token expiration.</li>
+<li class="task"><input type="checkbox">Protect API routes.</li>
+<li class="task"><input type="checkbox">Implement roles: ADMIN, MANAGER, MEMBER, VIEWER.</li>
+<li class="task"><input type="checkbox">Check permissions at the service/API layer.</li>
+<li class="task"><input type="checkbox">Hide/disable unauthorized frontend actions.</li>
+</ul>
+
+<h3>Permission example</h3>
+<table>
+<tr><th>Action</th><th>Admin</th><th>Manager</th><th>Member</th><th>Viewer</th></tr>
+<tr><td>View project</td><td>✓</td><td>✓</td><td>✓</td><td>✓</td></tr>
+<tr><td>Create project</td><td>✓</td><td>✓</td><td>Maybe</td><td>—</td></tr>
+<tr><td>Upload document</td><td>✓</td><td>✓</td><td>✓</td><td>—</td></tr>
+<tr><td>Delete project</td><td>✓</td><td>Owner only</td><td>—</td><td>—</td></tr>
+<tr><td>Manage users</td><td>✓</td><td>Limited</td><td>—</td><td>—</td></tr>
+</table>
+</section>
+
+<section id="documents">
+<h2>8. Document Management</h2>
+<div class="flow">Upload → Validate → Store file → Save metadata → Extract text → Chunk → Index → Ready for search/AI</div>
+
+<ul class="checklist">
+<li class="task"><input type="checkbox">Validate file type.</li>
+<li class="task"><input type="checkbox">Validate file size.</li>
+<li class="task"><input type="checkbox">Generate safe storage name.</li>
+<li class="task"><input type="checkbox">Store document metadata in PostgreSQL.</li>
+<li class="task"><input type="checkbox">Store files separately from database records.</li>
+<li class="task"><input type="checkbox">Implement document download/view.</li>
+<li class="task"><input type="checkbox">Implement delete with permission checks.</li>
+<li class="task"><input type="checkbox">Add document search.</li>
+<li class="task"><input type="checkbox">Add filters by project/type/date/owner.</li>
+<li class="task"><input type="checkbox">Add pagination.</li>
+<li class="task"><input type="checkbox">Extract text from supported documents.</li>
+</ul>
+</section>
+
+<section id="ai">
+<h2>9. AI / RAG System</h2>
+<p>The AI feature should answer questions using the user's documents instead of blindly answering from general model knowledge.</p>
+
+<h3>RAG pipeline</h3>
+<pre>
+PDF / DOCX / TXT
+       ↓
+Text extraction
+       ↓
+Clean text
+       ↓
+Chunking
+       ↓
+Embeddings
+       ↓
+Vector store
+       ↓
+User question
+       ↓
+Question embedding
+       ↓
+Similarity search
+       ↓
+Relevant chunks
+       ↓
+Prompt with context
+       ↓
+LLM
+       ↓
+Answer + sources
+</pre>
+
+<h3>AI tasks</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Choose an LLM provider/model.</li>
+<li class="task"><input type="checkbox">Choose an embedding model.</li>
+<li class="task"><input type="checkbox">Choose a vector database/store.</li>
+<li class="task"><input type="checkbox">Build document text extraction.</li>
+<li class="task"><input type="checkbox">Implement chunking strategy.</li>
+<li class="task"><input type="checkbox">Generate embeddings.</li>
+<li class="task"><input type="checkbox">Store embeddings and metadata.</li>
+<li class="task"><input type="checkbox">Implement similarity search.</li>
+<li class="task"><input type="checkbox">Build prompt with retrieved context.</li>
+<li class="task"><input type="checkbox">Return answer with source document references.</li>
+<li class="task"><input type="checkbox">Save AI conversations/messages.</li>
+<li class="task"><input type="checkbox">Prevent users from retrieving documents they cannot access.</li>
+<li class="task"><input type="checkbox">Handle AI errors/timeouts.</li>
+<li class="task"><input type="checkbox">Add basic limits/rate limiting for AI requests.</li>
+</ul>
+
+<h3>Example user experience</h3>
+<p>User uploads a financial report and asks: <em>“What are the main operational risks?”</em></p>
+<p>The application retrieves relevant document sections and returns an answer with the source document/section so the user can verify it.</p>
+</section>
+
+<section id="risks">
+<h2>10. Risk Management</h2>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Create risk.</li>
+<li class="task"><input type="checkbox">Set severity: LOW / MEDIUM / HIGH / CRITICAL.</li>
+<li class="task"><input type="checkbox">Set status: OPEN / MITIGATING / RESOLVED.</li>
+<li class="task"><input type="checkbox">Assign risk owner.</li>
+<li class="task"><input type="checkbox">Add mitigation plan.</li>
+<li class="task"><input type="checkbox">Filter risks by severity/status/project.</li>
+<li class="task"><input type="checkbox">Display risk summary on dashboard.</li>
+<li class="task"><input type="checkbox">Optionally extract candidate risks from documents with AI.</li>
+</ul>
+</section>
+
+<section id="analytics">
+<h2>11. Analytics & Data Visualization</h2>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Total projects metric.</li>
+<li class="task"><input type="checkbox">Active users metric.</li>
+<li class="task"><input type="checkbox">Documents uploaded metric.</li>
+<li class="task"><input type="checkbox">AI questions metric.</li>
+<li class="task"><input type="checkbox">Open risks metric.</li>
+<li class="task"><input type="checkbox">Documents over time chart.</li>
+<li class="task"><input type="checkbox">AI usage chart.</li>
+<li class="task"><input type="checkbox">Risk severity chart.</li>
+<li class="task"><input type="checkbox">Project activity chart.</li>
+<li class="task"><input type="checkbox">Add API endpoint for dashboard aggregation.</li>
+</ul>
+</section>
+
+<section id="quality">
+<h2>12. Clean Code, OOP, SOLID & Design Patterns</h2>
+
+<h3>OOP tasks</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Use classes where they have a clear responsibility.</li>
+<li class="task"><input type="checkbox">Practice composition.</li>
+<li class="task"><input type="checkbox">Understand inheritance and polymorphism.</li>
+<li class="task"><input type="checkbox">Use encapsulation appropriately.</li>
+<li class="task"><input type="checkbox">Avoid giant classes.</li>
+</ul>
+
+<h3>SOLID tasks</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Single Responsibility Principle.</li>
+<li class="task"><input type="checkbox">Open/Closed Principle.</li>
+<li class="task"><input type="checkbox">Liskov Substitution Principle.</li>
+<li class="task"><input type="checkbox">Interface Segregation Principle.</li>
+<li class="task"><input type="checkbox">Dependency Inversion Principle.</li>
+</ul>
+
+<h3>Patterns to understand and use only when useful</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Repository Pattern.</li>
+<li class="task"><input type="checkbox">Dependency Injection.</li>
+<li class="task"><input type="checkbox">Strategy Pattern where appropriate.</li>
+<li class="task"><input type="checkbox">Factory Pattern where appropriate.</li>
+</ul>
+
+<h3>Clean code rules</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Use clear names.</li>
+<li class="task"><input type="checkbox">Keep functions small and focused.</li>
+<li class="task"><input type="checkbox">Avoid duplicated logic.</li>
+<li class="task"><input type="checkbox">Validate inputs at boundaries.</li>
+<li class="task"><input type="checkbox">Separate business logic from HTTP/database details.</li>
+<li class="task"><input type="checkbox">Use type hints.</li>
+<li class="task"><input type="checkbox">Write useful comments only when needed.</li>
+</ul>
+</section>
+
+<section id="testing">
+<h2>13. Testing</h2>
+
+<h3>Backend — Pytest</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Test user registration.</li>
+<li class="task"><input type="checkbox">Test login.</li>
+<li class="task"><input type="checkbox">Test invalid credentials.</li>
+<li class="task"><input type="checkbox">Test project CRUD.</li>
+<li class="task"><input type="checkbox">Test document upload validation.</li>
+<li class="task"><input type="checkbox">Test authorization rules.</li>
+<li class="task"><input type="checkbox">Test risk CRUD.</li>
+<li class="task"><input type="checkbox">Test AI endpoint behavior with mocked AI calls.</li>
+<li class="task"><input type="checkbox">Test error cases.</li>
+</ul>
+
+<h3>Frontend — Jest + React Testing Library</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Test login form.</li>
+<li class="task"><input type="checkbox">Test protected routes.</li>
+<li class="task"><input type="checkbox">Test project components.</li>
+<li class="task"><input type="checkbox">Test document list states.</li>
+<li class="task"><input type="checkbox">Test error/loading states.</li>
+<li class="task"><input type="checkbox">Test important user interactions.</li>
+</ul>
+
+<h3>Quality gates</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">All tests pass locally.</li>
+<li class="task"><input type="checkbox">Tests run automatically in CI.</li>
+<li class="task"><input type="checkbox">Add linting/formatting.</li>
+<li class="task"><input type="checkbox">Keep secrets out of the repository.</li>
+</ul>
+</section>
+
+<section id="git">
+<h2>14. Git & Version Control Workflow</h2>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Create GitHub repository.</li>
+<li class="task"><input type="checkbox">Use a clear README.</li>
+<li class="task"><input type="checkbox">Create feature branches.</li>
+<li class="task"><input type="checkbox">Use clear commit messages.</li>
+<li class="task"><input type="checkbox">Open pull requests for important features.</li>
+<li class="task"><input type="checkbox">Review your own diff before merging.</li>
+<li class="task"><input type="checkbox">Keep main branch stable.</li>
+<li class="task"><input type="checkbox">Use .gitignore.</li>
+<li class="task"><input type="checkbox">Never commit passwords/API keys.</li>
+</ul>
+
+<h3>Simple commit examples</h3>
+<pre>
+feat: add project API
+feat: add document upload
+fix: prevent duplicate documents
+test: add project API tests
+refactor: move database logic to repository
+docs: update setup guide
+</pre>
+</section>
+
+<section id="devops">
+<h2>15. Linux, Docker, Redis, CI/CD & Cloud</h2>
+
+<h3>Linux / Bash</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Practice ls, cd, pwd, mkdir, cp, mv, rm.</li>
+<li class="task"><input type="checkbox">Practice grep, find, cat, tail and curl.</li>
+<li class="task"><input type="checkbox">Understand processes and ports.</li>
+<li class="task"><input type="checkbox">Use environment variables.</li>
+<li class="task"><input type="checkbox">Create a small setup/test Bash script.</li>
+</ul>
+
+<h3>Docker</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Create backend Dockerfile.</li>
+<li class="task"><input type="checkbox">Create frontend Dockerfile.</li>
+<li class="task"><input type="checkbox">Create Docker Compose.</li>
+<li class="task"><input type="checkbox">Run PostgreSQL in Docker.</li>
+<li class="task"><input type="checkbox">Run Redis in Docker.</li>
+<li class="task"><input type="checkbox">Make local setup work with one command.</li>
+</ul>
+
+<h3>Redis</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Connect Redis.</li>
+<li class="task"><input type="checkbox">Cache a suitable dashboard/query result.</li>
+<li class="task"><input type="checkbox">Add basic API rate limiting or request throttling.</li>
+<li class="task"><input type="checkbox">Understand cache expiration.</li>
+</ul>
+
+<h3>CI/CD</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Create GitHub Actions workflow.</li>
+<li class="task"><input type="checkbox">Install dependencies in CI.</li>
+<li class="task"><input type="checkbox">Run backend tests.</li>
+<li class="task"><input type="checkbox">Run frontend tests.</li>
+<li class="task"><input type="checkbox">Run lint/format checks.</li>
+<li class="task"><input type="checkbox">Build Docker images.</li>
+<li class="task"><input type="checkbox">Deploy after successful checks.</li>
+</ul>
+
+<h3>GCP</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Learn basic IAM.</li>
+<li class="task"><input type="checkbox">Learn compute/container deployment.</li>
+<li class="task"><input type="checkbox">Learn object storage.</li>
+<li class="task"><input type="checkbox">Learn managed database concepts.</li>
+<li class="task"><input type="checkbox">Deploy the application.</li>
+<li class="task"><input type="checkbox">Configure environment variables/secrets.</li>
+<li class="task"><input type="checkbox">Add basic logging/monitoring.</li>
+</ul>
+</section>
+
+<section id="microservices">
+<h2>16. Microservices</h2>
+<p>Do not start with microservices. First build a clean modular monolith. Then extract AI processing when there is a clear reason.</p>
+<div class="flow">Main API → AI Service → Vector Store / LLM</div>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Understand monolith vs microservices.</li>
+<li class="task"><input type="checkbox">Create separate AI service with FastAPI.</li>
+<li class="task"><input type="checkbox">Define a small internal API between services.</li>
+<li class="task"><input type="checkbox">Containerize the AI service.</li>
+<li class="task"><input type="checkbox">Handle service failures/timeouts.</li>
+<li class="task"><input type="checkbox">Document why the AI service was separated.</li>
+</ul>
+</section>
+
+<section id="security">
+<h2>17. Security</h2>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Hash passwords; never store plain passwords.</li>
+<li class="task"><input type="checkbox">Validate all incoming data.</li>
+<li class="task"><input type="checkbox">Use parameterized ORM/database queries.</li>
+<li class="task"><input type="checkbox">Configure CORS carefully.</li>
+<li class="task"><input type="checkbox">Protect secrets with environment variables/secret storage.</li>
+<li class="task"><input type="checkbox">Validate uploaded file types and sizes.</li>
+<li class="task"><input type="checkbox">Enforce authorization on the backend.</li>
+<li class="task"><input type="checkbox">Add rate limiting for sensitive endpoints.</li>
+<li class="task"><input type="checkbox">Avoid leaking sensitive information in errors/logs.</li>
+<li class="task"><input type="checkbox">Use HTTPS in production.</li>
+<li class="task"><input type="checkbox">Review common OWASP web risks.</li>
+</ul>
+</section>
+
+<section id="audit">
+<h2>18. Audit Logs & Monitoring</h2>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Log login events.</li>
+<li class="task"><input type="checkbox">Log document upload/delete.</li>
+<li class="task"><input type="checkbox">Log project changes.</li>
+<li class="task"><input type="checkbox">Log permission changes.</li>
+<li class="task"><input type="checkbox">Store who, what, when and entity.</li>
+<li class="task"><input type="checkbox">Add request IDs/correlation IDs if possible.</li>
+<li class="task"><input type="checkbox">Add application health endpoint.</li>
+<li class="task"><input type="checkbox">Monitor application errors in production.</li>
+</ul>
+</section>
+
+<section id="docs">
+<h2>19. Documentation & Portfolio Quality</h2>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Write clear README.</li>
+<li class="task"><input type="checkbox">Add project screenshots.</li>
+<li class="task"><input type="checkbox">Add architecture diagram.</li>
+<li class="task"><input type="checkbox">Add database ER diagram.</li>
+<li class="task"><input type="checkbox">Document local setup.</li>
+<li class="task"><input type="checkbox">Document environment variables without exposing secrets.</li>
+<li class="task"><input type="checkbox">Document API examples.</li>
+<li class="task"><input type="checkbox">Document testing commands.</li>
+<li class="task"><input type="checkbox">Document Docker commands.</li>
+<li class="task"><input type="checkbox">Document deployment.</li>
+<li class="task"><input type="checkbox">Add architecture decisions and trade-offs.</li>
+<li class="task"><input type="checkbox">Add known limitations.</li>
+<li class="task"><input type="checkbox">Add future improvements.</li>
+</ul>
+</section>
+
+<section id="roadmap">
+<h2>20. Four-Month Development Plan</h2>
+
+<h3>Month 1 — OOP, SQL, REST & Backend foundation</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Finish Python OOP mini-project: User, Project, Document.</li>
+<li class="task"><input type="checkbox">Practice composition, exceptions and clean class responsibilities.</li>
+<li class="task"><input type="checkbox">Learn PostgreSQL and SQL.</li>
+<li class="task"><input type="checkbox">Design database ER diagram.</li>
+<li class="task"><input type="checkbox">Learn HTTP and REST.</li>
+<li class="task"><input type="checkbox">Create FastAPI project.</li>
+<li class="task"><input type="checkbox">Connect FastAPI to PostgreSQL.</li>
+<li class="task"><input type="checkbox">Build Users/Projects/Documents APIs.</li>
+<li class="task"><input type="checkbox">Add JWT authentication.</li>
+<li class="task"><input type="checkbox">Add basic tests.</li>
+</ul>
+
+<h3>Month 2 — React full-stack MVP</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Learn React + TypeScript fundamentals.</li>
+<li class="task"><input type="checkbox">Set up Material UI.</li>
+<li class="task"><input type="checkbox">Build login/register pages.</li>
+<li class="task"><input type="checkbox">Build dashboard.</li>
+<li class="task"><input type="checkbox">Build projects UI.</li>
+<li class="task"><input type="checkbox">Build documents UI.</li>
+<li class="task"><input type="checkbox">Connect frontend to REST API.</li>
+<li class="task"><input type="checkbox">Add role-based UI behavior.</li>
+<li class="task"><input type="checkbox">Add upload/search/filter/pagination.</li>
+<li class="task"><input type="checkbox">Finish usable full-stack MVP.</li>
+</ul>
+
+<h3>Month 3 — Engineering quality & DevOps</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Refactor toward clean architecture.</li>
+<li class="task"><input type="checkbox">Review SOLID and design patterns.</li>
+<li class="task"><input type="checkbox">Expand Pytest tests.</li>
+<li class="task"><input type="checkbox">Add Jest/React Testing Library tests.</li>
+<li class="task"><input type="checkbox">Add error handling and logging.</li>
+<li class="task"><input type="checkbox">Add RBAC and audit logs.</li>
+<li class="task"><input type="checkbox">Add Redis.</li>
+<li class="task"><input type="checkbox">Dockerize the application.</li>
+<li class="task"><input type="checkbox">Create GitHub Actions CI/CD.</li>
+<li class="task"><input type="checkbox">Improve README and diagrams.</li>
+</ul>
+
+<h3>Month 4 — AI, Cloud & production polish</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Build document text extraction pipeline.</li>
+<li class="task"><input type="checkbox">Implement chunking and embeddings.</li>
+<li class="task"><input type="checkbox">Implement vector search.</li>
+<li class="task"><input type="checkbox">Build RAG question answering.</li>
+<li class="task"><input type="checkbox">Show sources with AI answers.</li>
+<li class="task"><input type="checkbox">Separate AI service if useful.</li>
+<li class="task"><input type="checkbox">Deploy to GCP.</li>
+<li class="task"><input type="checkbox">Add production logging/monitoring.</li>
+<li class="task"><input type="checkbox">Perform security review.</li>
+<li class="task"><input type="checkbox">Polish UI and fix important bugs.</li>
+<li class="task"><input type="checkbox">Prepare final demo and interview explanation.</li>
+</ul>
+</section>
+
+<section id="problem">
+<h2>21. Problem Solving & Consulting Mindset</h2>
+<p>For every major feature, practice this process:</p>
+<div class="flow">Problem → Scope → Requirements → Options → Decision → Implementation → Testing → Review</div>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Write the problem before coding.</li>
+<li class="task"><input type="checkbox">Define what is inside/outside the scope.</li>
+<li class="task"><input type="checkbox">List functional requirements.</li>
+<li class="task"><input type="checkbox">List non-functional requirements.</li>
+<li class="task"><input type="checkbox">Think about edge cases.</li>
+<li class="task"><input type="checkbox">Compare possible solutions.</li>
+<li class="task"><input type="checkbox">Choose a solution and write why.</li>
+<li class="task"><input type="checkbox">Implement a small version first.</li>
+<li class="task"><input type="checkbox">Test it.</li>
+<li class="task"><input type="checkbox">Review and improve it.</li>
+</ul>
+</section>
+
+<section id="english">
+<h2>22. Communication & Interview Preparation</h2>
+<ul class="checklist">
+<li class="task"><input type="checkbox">Explain the project in 60 seconds in English.</li>
+<li class="task"><input type="checkbox">Explain the architecture in simple English.</li>
+<li class="task"><input type="checkbox">Explain why you chose FastAPI.</li>
+<li class="task"><input type="checkbox">Explain why you chose PostgreSQL.</li>
+<li class="task"><input type="checkbox">Explain JWT authentication.</li>
+<li class="task"><input type="checkbox">Explain REST API design.</li>
+<li class="task"><input type="checkbox">Explain Repository Pattern.</li>
+<li class="task"><input type="checkbox">Explain SOLID with examples from your project.</li>
+<li class="task"><input type="checkbox">Explain Docker and CI/CD.</li>
+<li class="task"><input type="checkbox">Explain RAG step by step.</li>
+<li class="task"><input type="checkbox">Explain one difficult bug and how you solved it.</li>
+<li class="task"><input type="checkbox">Explain one architectural trade-off.</li>
+<li class="task"><input type="checkbox">Practice a 5-minute project demo.</li>
+</ul>
+</section>
+
+<section id="final">
+<h2>23. Final BCG-Oriented Skills Checklist</h2>
+<p>Use this only as a final self-check. You do not need to master every nice-to-have.</p>
+<table>
+<tr><th>Skill</th><th>Status</th><th>Evidence in project</th></tr>
+<tr><td>Python</td><td><input type="checkbox"></td><td>FastAPI backend and services.</td></tr>
+<tr><td>FastAPI</td><td><input type="checkbox"></td><td>REST API.</td></tr>
+<tr><td>React</td><td><input type="checkbox"></td><td>Web dashboard and pages.</td></tr>
+<tr><td>TypeScript</td><td><input type="checkbox"></td><td>Frontend code.</td></tr>
+<tr><td>PostgreSQL</td><td><input type="checkbox"></td><td>Relational data model.</td></tr>
+<tr><td>OOP</td><td><input type="checkbox"></td><td>Services/models and mini-project.</td></tr>
+<tr><td>Clean Code</td><td><input type="checkbox"></td><td>Layered architecture and readable code.</td></tr>
+<tr><td>Design Patterns</td><td><input type="checkbox"></td><td>Repository/DI and selected patterns.</td></tr>
+<tr><td>RESTful API</td><td><input type="checkbox"></td><td>Versioned API endpoints.</td></tr>
+<tr><td>Material UI</td><td><input type="checkbox"></td><td>Reusable UI components.</td></tr>
+<tr><td>Testing</td><td><input type="checkbox"></td><td>Pytest + Jest.</td></tr>
+<tr><td>Git</td><td><input type="checkbox"></td><td>Branches, commits, PR-style workflow.</td></tr>
+<tr><td>Linux/Bash</td><td><input type="checkbox"></td><td>CLI and scripts.</td></tr>
+<tr><td>Docker</td><td><input type="checkbox"></td><td>Containerized services.</td></tr>
+<tr><td>Microservices</td><td><input type="checkbox"></td><td>Optional AI service.</td></tr>
+<tr><td>Cloud</td><td><input type="checkbox"></td><td>GCP deployment.</td></tr>
+<tr><td>CI/CD</td><td><input type="checkbox"></td><td>GitHub Actions pipeline.</td></tr>
+<tr><td>NoSQL</td><td><input type="checkbox"></td><td>Optional experiment; not required.</td></tr>
+<tr><td>Data Visualization</td><td><input type="checkbox"></td><td>Analytics dashboard.</td></tr>
+<tr><td>AI</td><td><input type="checkbox"></td><td>RAG document assistant.</td></tr>
+<tr><td>Problem Solving</td><td><input type="checkbox"></td><td>Architecture decisions and trade-offs.</td></tr>
+<tr><td>Communication</td><td><input type="checkbox"></td><td>Project explanation/demo in English.</td></tr>
+</table>
+
+<h3>Final definition of done</h3>
+<ul class="checklist">
+<li class="task"><input type="checkbox">A new developer can run the project using your README.</li>
+<li class="task"><input type="checkbox">Frontend and backend work together.</li>
+<li class="task"><input type="checkbox">Database migrations work.</li>
+<li class="task"><input type="checkbox">Authentication and authorization work.</li>
+<li class="task"><input type="checkbox">Documents can be uploaded and searched.</li>
+<li class="task"><input type="checkbox">AI can answer questions from documents with sources.</li>
+<li class="task"><input type="checkbox">Important features have automated tests.</li>
+<li class="task"><input type="checkbox">Docker setup works.</li>
+<li class="task"><input type="checkbox">CI pipeline passes.</li>
+<li class="task"><input type="checkbox">Application is deployed.</li>
+<li class="task"><input type="checkbox">Security basics are reviewed.</li>
+<li class="task"><input type="checkbox">README and architecture diagrams are complete.</li>
+<li class="task"><input type="checkbox">You can explain every important technical decision yourself.</li>
+</ul>
+
+<h3>Important rule</h3>
+<p><strong>Do not build everything at once.</strong> Build the MVP first, then improve it. Do not add Kubernetes, Terraform, microservices or AI before the core application works. The goal is not to collect technologies; the goal is to show that you can design, build, test, explain and improve a real application.</p>
+</section>
+
+</main>
+
+<div class="progress" id="progress">0% complete</div>
+<footer>Enterprise AI Document & Risk Management Platform — Master Project Specification</footer>
+
+<script>
+const KEY = "enterprise_ai_project_tasks_v1";
+const boxes = Array.from(document.querySelectorAll('input[type="checkbox"]'));
+
+function loadState() {
+  try {
+    const saved = JSON.parse(localStorage.getItem(KEY) || "[]");
+    boxes.forEach((box, i) => box.checked = !!saved[i]);
+  } catch(e) {}
+  updateProgress();
+}
+function saveState() {
+  localStorage.setItem(KEY, JSON.stringify(boxes.map(b => b.checked)));
+  updateProgress();
+}
+function updateProgress() {
+  const checked = boxes.filter(b => b.checked).length;
+  const pct = boxes.length ? Math.round((checked / boxes.length) * 100) : 0;
+  document.getElementById("progress").textContent = `${pct}% complete (${checked}/${boxes.length})`;
+}
+boxes.forEach(b => b.addEventListener("change", saveState));
+loadState();
+</script>
+
+</body>
+</html>
+"""
+
+path = Path("/mnt/data/enterprise_ai_project_full_spec.html")
+path.write_text(html, encoding="utf-8")
+print(path)
