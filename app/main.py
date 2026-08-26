@@ -1,10 +1,13 @@
 from models import User, Project, Document
 
 
-def ft_main():
-    # =========================
-    # 1. Create Users
-    # =========================
+def main():
+
+    # ========================================
+    # 1. CREATE USERS
+    # ========================================
+
+    print("\n===== CREATE USERS =====")
 
     user1 = User(
         id=1,
@@ -20,9 +23,32 @@ def ft_main():
         role="manager"
     )
 
-    # =========================
-    # 2. Create Projects
-    # =========================
+    user1.display_info()
+    print()
+
+    user2.display_info()
+
+
+    # ========================================
+    # 2. CHANGE USER ROLE
+    # ========================================
+
+    print("\n===== CHANGE USER ROLE =====")
+
+    print("Before:")
+    user1.display_info()
+
+    user1.change_role("manager")
+
+    print("\nAfter:")
+    user1.display_info()
+
+
+    # ========================================
+    # 3. CREATE PROJECTS
+    # ========================================
+
+    print("\n===== CREATE PROJECTS =====")
 
     project_A = Project(
         id=1,
@@ -38,9 +64,17 @@ def ft_main():
         owner=user2
     )
 
-    # =========================
-    # 3. Create Documents
-    # =========================
+    project_A.display_info()
+    print()
+
+    project_B.display_info()
+
+
+    # ========================================
+    # 4. CREATE DOCUMENTS
+    # ========================================
+
+    print("\n===== CREATE DOCUMENTS =====")
 
     document1 = Document(
         id=1,
@@ -58,88 +92,173 @@ def ft_main():
         project=project_B
     )
 
-    # =========================
-    # 4. Add documents
-    # =========================
+    document1.display_info()
+    print()
+
+    document2.display_info()
+
+
+    # ========================================
+    # 5. ADD DOCUMENTS TO PROJECTS
+    # ========================================
+
+    print("\n===== ADD DOCUMENTS =====")
 
     project_A.add_document(document1)
     project_B.add_document(document2)
 
-    print("\n===== PROJECT A =====")
     project_A.display_info()
     project_A.list_documents()
 
-    print("\n===== PROJECT B =====")
+    print()
+
     project_B.display_info()
     project_B.list_documents()
 
-    # =========================
-    # 5. Rename document
-    # =========================
+
+    # ========================================
+    # 6. TEST DUPLICATE DOCUMENT
+    # ========================================
+
+    print("\n===== TEST DUPLICATE DOCUMENT =====")
+
+    project_A.add_document(document1)
+    project_A.add_document(document1)
+
+    print("Documents in Project A:")
+    project_A.list_documents()
+
+    print(f"Number of documents: {len(project_A.documents)}")
+
+
+    # ========================================
+    # 7. RENAME DOCUMENT
+    # ========================================
 
     print("\n===== RENAME DOCUMENT =====")
 
-    document1.rename("Financial Report 2026")
-
+    print("Before:")
     document1.display_info()
 
-    # =========================
-    # 6. Remove document
-    # =========================
+    document1.rename("Financial Report 2026")
+
+    print("\nAfter:")
+    document1.display_info()
+
+
+    # ========================================
+    # 8. REMOVE DOCUMENT
+    # ========================================
 
     print("\n===== REMOVE DOCUMENT =====")
 
-    project_A.remove_document(document1)
-
-    project_A.display_info()
+    print("Before:")
     project_A.list_documents()
 
-    # =========================
-    # 7. Add it back
-    # =========================
+    project_A.remove_document(document1)
+
+    print("\nAfter:")
+    project_A.list_documents()
+
+    print(f"Number of documents: {len(project_A.documents)}")
+
+
+    # ========================================
+    # 9. REMOVE DOCUMENT AGAIN
+    # ========================================
+
+    print("\n===== REMOVE DOCUMENT AGAIN =====")
+
+    project_A.remove_document(document1)
+
+    print("Program did not crash.")
+    print("Safe removal works.")
+
+
+    # ========================================
+    # 10. ADD DOCUMENT AGAIN
+    # ========================================
 
     print("\n===== ADD DOCUMENT AGAIN =====")
 
     project_A.add_document(document1)
 
-    project_A.display_info()
     project_A.list_documents()
 
-    # =========================
-    # 8. Change project
-    # =========================
+
+    # ========================================
+    # 11. CHANGE PROJECT
+    # ========================================
 
     print("\n===== CHANGE PROJECT =====")
 
-    document1.change_project(project_B)
+    print("\nBefore changing:")
 
     print("\nProject A:")
-    project_A.display_info()
     project_A.list_documents()
 
     print("\nProject B:")
+    project_B.list_documents()
+
+    print("\nDocument project:")
+    print(document1.project.name)
+
+
+    document1.change_project(project_B)
+
+
+    print("\nAfter changing:")
+
+    print("\nProject A:")
+    project_A.list_documents()
+
+    print("\nProject B:")
+    project_B.list_documents()
+
+    print("\nDocument project:")
+    print(document1.project.name)
+
+
+    # ========================================
+    # 12. CHANGE TO SAME PROJECT
+    # ========================================
+
+    print("\n===== CHANGE TO SAME PROJECT =====")
+
+    document1.change_project(project_B)
+
+    print("Document project:")
+    print(document1.project.name)
+
+    print("\nProject B documents:")
+    project_B.list_documents()
+
+
+    # ========================================
+    # 13. FINAL STATE
+    # ========================================
+
+    print("\n===== FINAL STATE =====")
+
+    print("\n--- USERS ---")
+    user1.display_info()
+    print()
+    user2.display_info()
+
+    print("\n--- PROJECT A ---")
+    project_A.display_info()
+    project_A.list_documents()
+
+    print("\n--- PROJECT B ---")
     project_B.display_info()
     project_B.list_documents()
 
-    print("\nDocument:")
+    print("\n--- DOCUMENT 1 ---")
     document1.display_info()
+
+    print("\n--- DOCUMENT 2 ---")
+    document2.display_info()
 
 
 if __name__ == "__main__":
-    ft_main()
-
-#TODO
-
-# Sure 👍 Here are the problems in short:
-
-# ❌ User.display_info()
-# It says "Document ID" instead of user information.
-# change_role() is empty.
-# ❌ Project.add_document()
-# The same document can be added multiple times.
-# You need to prevent duplicates.
-# ❌ Project.remove_document()
-# It can crash if the document is not in the project.
-# You need to handle this safely.
-# ⚠️ Document ↔ Project relationship
-# You have to keep both sides synchronized:
+    main()

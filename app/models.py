@@ -5,11 +5,14 @@ class User:
         self.email = email
         self.role = role
     def display_info(self):
-        print(f"Document ID: {self.id}")
-        print(f"")
+        print(f"User ID: {self.id}")
+        print(f"Name: {self.name}")
+        print(f"Email: {self.email}")
+        print(f"Role: {self.role}")
 
-    def change_role(self):
-        pass
+    def change_role(self, new_role):
+        self.role = new_role
+        
 
 
 class Project:
@@ -28,10 +31,12 @@ class Project:
         print(f"Number of documents: {len(self.documents)}")
 
     def add_document(self, doc):
-        self.documents.append(doc)
+        if doc not in self.documents:
+            self.documents.append(doc)
     
     def remove_document(self, doc):
-        self.documents.remove(doc)
+        if doc in self.documents:
+            self.documents.remove(doc)
 
     def list_documents(self):
         for doc in self.documents:
@@ -55,8 +60,9 @@ class Document:
         self.title = new_name
 
     def change_project(self, new_project):
+        if self.project == new_project:
+            return
         old_project = self.project
         old_project.remove_document(self)
         self.project = new_project
-        new_project.add_document(self)
-    
+        self.project.add_document(self)
