@@ -1,8 +1,8 @@
-h# Enterprise AI Document & Risk Management Platform
+# Enterprise AI Document & Risk Management Platform
 
 A production-style full-stack web application for managing **projects, business documents, risks, permissions, and AI-powered document analysis**.
 
-The goal of this project is to build a realistic enterprise application while practicing the software engineering skills required for modern technology consulting and software engineering roles.
+The goal of this project is to build a realistic enterprise application while practicing the software engineering skills required for modern software engineering and technology consulting roles.
 
 ---
 
@@ -20,7 +20,7 @@ This platform aims to provide one secure application where users can:
 * Manage business risks
 * Ask questions about company documents
 * Receive AI answers with document references
-* View useful business analytics
+* View business analytics
 * Track important actions through audit history
 
 The final system will combine a traditional business application with an AI/RAG document assistant.
@@ -29,81 +29,85 @@ The final system will combine a traditional business application with an AI/RAG 
 
 ## Main Users
 
-The platform supports different user roles:
+The platform will support different user roles:
 
-* **Admin** — manages the platform and users
-* **Manager** — manages projects and project members
-* **Member** — works with project documents
-* **Viewer** — can view permitted information
+| Role        | Description                          |
+| ----------- | ------------------------------------ |
+| **Admin**   | Manages the platform and users       |
+| **Manager** | Manages projects and project members |
+| **Member**  | Works with project documents         |
+| **Viewer**  | Can view permitted information       |
 
 Role-based authorization will control what each user can access and modify.
 
 ---
 
-## Core Architecture
+## Architecture
 
 The application will use a layered architecture:
 
 ```text
-┌──────────────────────────────┐
-│        React + TypeScript    │
-│        Material UI           │
-└──────────────┬───────────────┘
-               │
-               │ REST API / JSON
-               ▼
-┌──────────────────────────────┐
-│        FastAPI Backend       │
-│                              │
-│ API → Services → Repository  │
-└──────────────┬───────────────┘
-               │
-               ▼
-┌──────────────────────────────┐
-│          PostgreSQL          │
-│                              │
-│ Users / Projects / Documents │
-│ Risks / Audit Logs           │
-└──────────────┬───────────────┘
-               │
-               ▼
-┌──────────────────────────────┐
-│          AI / RAG            │
-│                              │
-│ Extraction → Chunking →      │
-│ Embeddings → Vector Search   │
-│ → LLM → Answer + Sources     │
-└──────────────────────────────┘
+┌─────────────────────────────────┐
+│       React + TypeScript        │
+│          Material UI            │
+└───────────────┬─────────────────┘
+                │
+                │ REST API / JSON
+                ▼
+┌─────────────────────────────────┐
+│          FastAPI Backend        │
+│                                 │
+│    API → Services → Repository  │
+└───────────────┬─────────────────┘
+                │
+                ▼
+┌─────────────────────────────────┐
+│           PostgreSQL            │
+│                                 │
+│ Users / Projects / Documents    │
+│ Risks / Audit Logs              │
+└───────────────┬─────────────────┘
+                │
+                ▼
+┌─────────────────────────────────┐
+│             AI / RAG            │
+│                                 │
+│ Extraction → Chunking           │
+│ → Embeddings → Vector Search    │
+│ → LLM → Answer + Sources        │
+└─────────────────────────────────┘
 ```
 
-The architecture is intentionally built in stages. The MVP will be completed before advanced AI, microservices, Kubernetes, Terraform, or other infrastructure is added.
+The architecture will be built incrementally.
+
+The **MVP will be completed before advanced infrastructure such as microservices, Kubernetes, Terraform, or complex cloud architecture is introduced.**
 
 ---
 
-## Technology Stack
+# Technology Stack
 
-### Backend
+## Backend
 
-* **Python**
-* **FastAPI**
-* **Pydantic**
-* **SQLAlchemy**
-* **PostgreSQL**
-* RESTful API
+* Python
+* FastAPI
+* Pydantic
+* SQLAlchemy
+* PostgreSQL
+* REST API
 * JWT authentication
 * Role-based authorization
 * Pytest
 
-### Frontend
+## Frontend
 
-* **React**
-* **TypeScript**
-* **Material UI**
+* React
+* TypeScript
+* Material UI
 * REST API integration
 * Jest
 * React Testing Library
 
-### Engineering
+## Engineering
 
 * Git
 * GitHub
@@ -115,7 +119,7 @@ The architecture is intentionally built in stages. The MVP will be completed bef
 * Dependency Injection
 * Automated testing
 
-### DevOps / Cloud
+## DevOps / Cloud
 
 Planned after the MVP:
 
@@ -126,11 +130,12 @@ Planned after the MVP:
 * CI/CD
 * GCP
 
-### AI
+## AI
 
 Planned after the core application:
 
 * Document text extraction
+* Text cleaning
 * Chunking
 * Embeddings
 * Vector search
@@ -140,9 +145,9 @@ Planned after the core application:
 
 ---
 
-## Current Database Design
+# Database Design
 
-The first version of the relational database contains:
+The first version of the relational database contains three main entities:
 
 ```text
 users
@@ -163,7 +168,7 @@ documents
 └── project_id → projects.id
 ```
 
-Relationships:
+### Relationships
 
 ```text
 User
@@ -180,7 +185,7 @@ Document
 Example:
 
 ```text
-AHMED
+Ahmed
   │
   ▼
 AI Platform
@@ -188,13 +193,13 @@ AI Platform
   └── report.pdf
 ```
 
-Database migrations will eventually be used so that the database can be created and updated consistently.
+Database migrations will be used to create and update the database consistently.
 
 ---
 
-## Backend Structure
+# Backend Structure
 
-The target backend structure is:
+The backend will progressively evolve toward the following structure:
 
 ```text
 backend/
@@ -225,22 +230,22 @@ backend/
 ├── tests/
 ├── migrations/
 ├── Dockerfile
-└── requirements.txt
+└── pyproject.toml
 ```
 
-The current repository is being built gradually toward this structure.
+The repository will be built gradually toward this structure rather than creating every component at once.
 
 ---
 
-## REST API
+# REST API
 
-The planned API will use a versioned prefix such as:
+The API will use a versioned prefix:
 
 ```text
 /api/v1
 ```
 
-### Authentication
+## Authentication
 
 ```text
 POST /api/v1/auth/register
@@ -248,7 +253,7 @@ POST /api/v1/auth/login
 POST /api/v1/auth/refresh
 ```
 
-### Users
+## Users
 
 ```text
 GET   /api/v1/users/me
@@ -256,7 +261,7 @@ GET   /api/v1/users
 PATCH /api/v1/users/{id}
 ```
 
-### Projects
+## Projects
 
 ```text
 POST   /api/v1/projects
@@ -266,7 +271,7 @@ PATCH  /api/v1/projects/{id}
 DELETE /api/v1/projects/{id}
 ```
 
-### Documents
+## Documents
 
 ```text
 POST   /api/v1/projects/{project_id}/documents
@@ -276,7 +281,7 @@ PATCH  /api/v1/documents/{id}
 DELETE /api/v1/documents/{id}
 ```
 
-### Risks
+## Risks
 
 ```text
 POST   /api/v1/projects/{project_id}/risks
@@ -290,7 +295,7 @@ These endpoints will be implemented progressively.
 
 ---
 
-## Security
+# Security
 
 Security is an important part of the project.
 
@@ -307,29 +312,29 @@ Planned security features include:
 * Audit logging for important actions
 * No passwords or API keys committed to Git
 
-Secrets will never be stored directly in the source code or committed to GitHub.
+Secrets must never be stored directly in source code or committed to GitHub.
 
 ---
 
-## Document Management
+# Document Management
 
-Users will eventually be able to upload:
+The platform will eventually support:
 
 * PDF
 * DOCX
 * TXT
 
-Documents will have metadata such as:
+Documents will contain metadata such as:
 
 * File name
 * Project
-* Owner/uploader
+* Owner / uploader
 * Upload date
 * File type
 * File size
 * Processing status
 
-The application will support:
+Planned document operations:
 
 * Upload
 * Search
@@ -340,31 +345,31 @@ The application will support:
 
 ---
 
-## AI / RAG Pipeline
+# AI / RAG Pipeline
 
-The AI functionality will be implemented **after the core application works**.
+AI functionality will be implemented **after the core application is working**.
 
 The planned pipeline is:
 
 ```text
 Document Upload
-      ↓
+       ↓
 Text Extraction
-      ↓
+       ↓
 Text Cleaning
-      ↓
+       ↓
 Chunking
-      ↓
+       ↓
 Embeddings
-      ↓
+       ↓
 Vector Store
-      ↓
+       ↓
 Similarity Search
-      ↓
+       ↓
 Relevant Context
-      ↓
+       ↓
 LLM
-      ↓
+       ↓
 Answer + Sources
 ```
 
@@ -377,17 +382,26 @@ User:
 
         ↓
 
-RAG retrieves relevant document chunks
+Retrieve relevant document chunks
 
         ↓
 
-LLM receives the question + context
+Send question + context to the LLM
 
         ↓
 
+Generate grounded answer
+
+        ↓
+
+Return answer + sources
+```
+
+Example response:
+
+```text
 Answer:
-
-"The refund policy allows ..."
+The refund policy allows ...
 
 Sources:
 - policy.pdf
@@ -395,15 +409,15 @@ Sources:
 - Section: Refund Policy
 ```
 
-The goal is for AI answers to include document/page/section references when available.
+The goal is for AI answers to include document, page, and section references whenever this information is available.
 
 ---
 
-## Testing Strategy
+# Testing Strategy
 
-Testing will be part of development, not something added only at the end.
+Testing will be part of development rather than something added only at the end.
 
-### Backend
+## Backend
 
 Using **Pytest**:
 
@@ -417,7 +431,7 @@ Using **Pytest**:
 * AI endpoint behavior
 * Error cases
 
-### Frontend
+## Frontend
 
 Using **Jest + React Testing Library**:
 
@@ -429,13 +443,11 @@ Using **Jest + React Testing Library**:
 * Error states
 * Important user interactions
 
-The project should have automated tests for important functionality before being considered complete.
+Important business logic and API behavior should have automated tests before the project is considered complete.
 
 ---
 
-## Git Workflow
-
-Git will be used throughout development.
+# Git Workflow
 
 The main branch should remain stable.
 
@@ -447,20 +459,24 @@ Example:
 git checkout -b feature/database-layer
 ```
 
-Example commit messages:
+### Commit Convention
 
 ```text
 feat: add database connection
 feat: add project API
 feat: add document upload
 feat: add JWT authentication
+
 test: add project API tests
+
 fix: validate document ownership
+
 refactor: move database logic to repository
+
 docs: update setup guide
 ```
 
-Before merging changes:
+Before merging:
 
 ```text
 Code
@@ -476,15 +492,15 @@ Merge
 
 ---
 
-## Development Roadmap
+# Development Roadmap
 
-### Phase 1 — Backend Foundation
+## Phase 1 — Backend Foundation
 
-* [x] Create PostgreSQL database
-* [x] Create users table
-* [x] Create projects table
-* [x] Create documents table
-* [x] Create foreign-key relationships
+* [ ] Create PostgreSQL database
+* [ ] Create users table
+* [ ] Create projects table
+* [ ] Create documents table
+* [ ] Create foreign-key relationships
 * [ ] Database connection from Python
 * [ ] SQLAlchemy models
 * [ ] Database migrations
@@ -496,7 +512,7 @@ Merge
 * [ ] Projects CRUD
 * [ ] Documents CRUD
 
-### Phase 2 — Authentication & Authorization
+## Phase 2 — Authentication & Authorization
 
 * [ ] User registration
 * [ ] Password hashing
@@ -507,7 +523,7 @@ Merge
 * [ ] Project permissions
 * [ ] Protected API routes
 
-### Phase 3 — Frontend MVP
+## Phase 3 — Frontend MVP
 
 * [ ] React + TypeScript setup
 * [ ] Material UI
@@ -523,20 +539,20 @@ Merge
 * [ ] Filtering
 * [ ] Pagination
 
-### Phase 4 — Quality & Engineering
+## Phase 4 — Quality & Engineering
 
 * [ ] Pytest tests
 * [ ] Jest tests
 * [ ] Error handling
 * [ ] Structured logging
-* [ ] Clean architecture
+* [ ] Clean architecture review
 * [ ] SOLID review
 * [ ] Repository Pattern
 * [ ] Dependency Injection
 * [ ] Audit logs
 * [ ] Health endpoint
 
-### Phase 5 — DevOps
+## Phase 5 — DevOps
 
 * [ ] Docker
 * [ ] Docker Compose
@@ -546,20 +562,20 @@ Merge
 * [ ] Production configuration
 * [ ] GCP deployment
 
-### Phase 6 — AI / RAG
+## Phase 6 — AI / RAG
 
-* [ ] PDF text extraction
-* [ ] DOCX text extraction
-* [ ] TXT processing
-* [ ] Chunking
-* [ ] Embeddings
+* [x] PDF text extraction
+* [x] DOCX text extraction
+* [x] TXT processing
+* [x] Chunking
+* [x] Embeddings
 * [ ] Vector search
 * [ ] RAG question answering
 * [ ] Source references
 * [ ] AI endpoint
 * [ ] Optional AI microservice
 
-### Phase 7 — Final Product
+## Phase 7 — Final Product
 
 * [ ] Analytics dashboard
 * [ ] Risk management
@@ -576,9 +592,9 @@ Merge
 
 ---
 
-## Problem-Solving Approach
+# Problem-Solving Approach
 
-For important features, I will follow this process:
+For important features, the development process will be:
 
 ```text
 Problem
@@ -600,46 +616,44 @@ Review
 Improvement
 ```
 
-This helps keep the project focused on solving a real problem instead of simply adding technologies.
+The goal is to solve a real business problem instead of simply adding technologies.
 
 ---
 
-## Project Principles
+# Project Principles
 
-### 1. Build the MVP first
+### 1. Build the MVP First
 
-The core application must work before adding advanced technologies.
+The core application must work before advanced technologies are introduced.
 
-### 2. Keep code clean
+### 2. Keep Code Clean
 
 Classes and functions should have clear responsibilities.
 
-### 3. Test important features
+### 3. Test Important Features
 
 Important business logic and API behavior should have automated tests.
 
-### 4. Protect user data
+### 4. Protect User Data
 
 Authentication, authorization, validation, and secure configuration are part of the design.
 
-### 5. Explain technical decisions
+### 5. Explain Technical Decisions
 
 Important architectural decisions should have a clear reason.
 
-### 6. Use technology because it solves a problem
+### 6. Use Technology Because It Solves a Problem
 
-Docker, Redis, microservices, cloud, and AI should be added when they provide a real benefit.
+Docker, Redis, microservices, cloud, and AI should be introduced when they provide a real benefit.
 
 ---
 
-## Skills Demonstrated
-
-This project is designed to demonstrate:
+# Skills Demonstrated
 
 | Skill           | Project Evidence                      |
 | --------------- | ------------------------------------- |
 | Python          | FastAPI backend and services          |
-| OOP             | Models, services and domain logic     |
+| OOP             | Models, services, and domain logic    |
 | Clean Code      | Layered architecture                  |
 | Design Patterns | Repository and Dependency Injection   |
 | FastAPI         | REST API                              |
@@ -650,7 +664,7 @@ This project is designed to demonstrate:
 | Material UI     | UI components                         |
 | Testing         | Pytest + Jest                         |
 | Git             | Feature branches and commits          |
-| Linux/Bash      | Development and scripts               |
+| Linux / Bash    | Development and scripts               |
 | Docker          | Containerized application             |
 | CI/CD           | GitHub Actions                        |
 | Cloud           | GCP deployment                        |
@@ -659,18 +673,18 @@ This project is designed to demonstrate:
 
 ---
 
-## Project Status
+# Project Status
 
 **Status:** 🚧 In Development
 
 The project is being developed incrementally.
 
-The current focus is:
+Current development direction:
 
 ```text
 PostgreSQL
     ↓
-Python backend
+Python Backend
     ↓
 FastAPI
     ↓
@@ -678,7 +692,7 @@ CRUD APIs
     ↓
 Authentication
     ↓
-React frontend
+React Frontend
     ↓
 Testing
     ↓
@@ -687,11 +701,11 @@ DevOps
 RAG / AI
 ```
 
-Features are marked as complete only after they have been implemented and tested.
+Features will only be marked as complete after they have been implemented and tested.
 
 ---
 
-## Final Goal
+# Final Goal
 
 The final application should allow a new developer to:
 
@@ -707,4 +721,26 @@ The final application should allow a new developer to:
 10. Ask questions about documents
 11. Receive AI answers with sources
 
-The project should demonstrate not only that I can write code, but that I can **understand a business problem, design a solution, build it, test it, explain technical decisions, and improve the system over time.**
+The project should demonstrate not only the ability to write code, but also the ability to:
+
+* Understand a business problem
+* Design a solution
+* Build the system
+* Test the system
+* Explain technical decisions
+* Handle security and permissions
+* Improve the system over time
+
+---
+
+## Author
+
+**Mohamed Chati**
+
+GitHub: [mchati42](https://github.com/mchati42)
+
+---
+
+## License
+
+This project is currently developed as a personal learning and portfolio project.
